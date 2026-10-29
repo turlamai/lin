@@ -2,7 +2,7 @@
 
 **English** · [中文](README.zh-CN.md)
 
-[![CI](https://github.com/turinglambdaai/lin/actions/workflows/ci.yml/badge.svg)](https://github.com/turinglambdaai/lin/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![CI](https://github.com/turlamai/lin/actions/workflows/ci.yml/badge.svg)](https://github.com/turlamai/lin/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 `lin` implements the frame layer of **LIN** (Local Interconnect Network,
 ISO 17987) — the low-cost single-wire bus that sits under CAN in every
