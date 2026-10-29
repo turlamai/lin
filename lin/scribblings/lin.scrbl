@@ -7,7 +7,7 @@
 @(define lin-eval (make-base-eval #:lang 'racket/base '(require lin)))
 
 @title[#:tag "lin"]{lin: Local Interconnect Network frames}
-@author{turinglambdaai}
+@author{turlamai}
 
 @defmodule[lin]
 
