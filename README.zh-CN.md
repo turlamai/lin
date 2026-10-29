@@ -2,7 +2,7 @@
 
 [English](README.md) · **中文**
 
-[![CI](https://github.com/turinglambdaai/lin/actions/workflows/ci.yml/badge.svg)](https://github.com/turinglambdaai/lin/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![CI](https://github.com/turlamai/lin/actions/workflows/ci.yml/badge.svg)](https://github.com/turlamai/lin/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 `lin` 实现 **LIN**（Local Interconnect Network，ISO 17987）的帧层——这种低成本单线总线在每辆车内都位于 CAN 之下，服务于车窗、座椅、后视镜及其他从设备。
 
