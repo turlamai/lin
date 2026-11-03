@@ -5,8 +5,8 @@
 [![CI](https://github.com/turlamai/lin/actions/workflows/ci.yml/badge.svg)](https://github.com/turlamai/lin/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 `lin` implements the frame layer of **LIN** (Local Interconnect Network,
-ISO 17987) — the low-cost single-wire bus that sits under CAN in every
-vehicle for window lifts, seats, mirrors and other slave devices.
+ISO 17987) — a low-cost single-wire bus commonly used alongside CAN in vehicles for
+window lifts, seats, mirrors and other slave devices.
 
 Everything is implemented in pure Racket.  The 64-entry protected-ID
 table and the checksum vectors (including the LIN specification 2.2A
@@ -23,6 +23,7 @@ raco pkg install lin
 ## Usage
 
 ```racket
+#lang racket/base
 (require lin)
 
 ;; frame IDs get two parity bits on the wire
@@ -36,7 +37,7 @@ raco pkg install lin
 
 ;; build, serialize and parse frames
 (define f (frame (protected-id #x11) (bytes #x4A #x55 #x93 #xE5)))
-(frame-bytes f)   ; => #"\125\021\112\125\223\345\307"  (sync, PID, data, checksum)
+(frame-bytes f)   ; => #"\125\021\112\125\223\345\325"  (sync, PID, data, checksum)
 (parse-frame (frame-bytes f))  ; => the same frame, all fields validated
 ```
 
@@ -66,6 +67,31 @@ the transport, not by these byte sequences; schedule tables and the LDF
 description language are separate concerns.  `frame-bits` gives the
 on-wire bit count (break included) for timing estimates at up to
 20 kbit/s.
+
+## API reference and development
+
+The collection registers its [Scribble API manual](lin/scribblings/lin.scrbl)
+through `lin/info.rkt`. After installation, use `raco docs lin` to find
+the reference for contracts, diagnostic frames, checksum choices and errors.
+
+The [executable quickstart](examples/quickstart.rkt) is the source of truth
+for the README's protected-ID, checksum and serialized-frame examples.
+It asserts a malformed-frame rejection as well, with synthetic bytes only:
+no LIN adapter, UART BREAK waveform or vehicle is required.
+
+From the repository root with Racket installed:
+
+```sh
+raco pkg install --auto --link .
+racket examples/quickstart.rkt
+raco test -p lin
+raco setup --check-pkg-deps -l lin
+```
+
+CI exercises the package tests, executable quickstart and dependency check
+on Linux, macOS and Windows. The package is a frame codec: the UART BREAK
+signal, baud-rate control, LDF parsing and schedule-table execution remain
+outside its scope.
 
 ## License
 
