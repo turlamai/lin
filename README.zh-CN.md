@@ -4,7 +4,7 @@
 
 [![CI](https://github.com/turlamai/lin/actions/workflows/ci.yml/badge.svg)](https://github.com/turlamai/lin/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-`lin` 实现 **LIN**（Local Interconnect Network，ISO 17987）的帧层——这种低成本单线总线在每辆车内都位于 CAN 之下，服务于车窗、座椅、后视镜及其他从设备。
+`lin` 实现 **LIN**（Local Interconnect Network，ISO 17987）的帧层——这种低成本单线总线常与 CAN 一同用于车辆网络，服务于车窗、座椅、后视镜及其他从设备。
 
 全部以纯 Racket 实现。64 项受保护 ID 表与校验和向量（包括 LIN 规范 2.2A §2.8.3 的示例计算）冻结自公开的 [stm8-lin-checksum](https://github.com/basilhussain/stm8-lin-checksum) 实现（MIT），作为测试基准数据。
 
@@ -17,6 +17,7 @@ raco pkg install lin
 ## 用法
 
 ```racket
+#lang racket/base
 (require lin)
 
 ;; frame IDs get two parity bits on the wire
@@ -30,7 +31,7 @@ raco pkg install lin
 
 ;; build, serialize and parse frames
 (define f (frame (protected-id #x11) (bytes #x4A #x55 #x93 #xE5)))
-(frame-bytes f)   ; => #"\125\021\112\125\223\345\307"  (sync, PID, data, checksum)
+(frame-bytes f)   ; => #"\125\021\112\125\223\345\325"  (sync, PID, data, checksum)
 (parse-frame (frame-bytes f))  ; => the same frame, all fields validated
 ```
 
@@ -51,6 +52,29 @@ ID 60（主请求）与 61（从响应）携带 8 个数据字节：NAD、PCI、
 ### 不在范围内的事项
 
 BREAK 字段是 UART 层面的产物（13 个显性位），由传输层处理，而非这些字节序列；调度表与 LDF 描述语言是另立的关注点。`frame-bits` 给出线上位计数（含 break），供最高 20 kbit/s 下的时序估算使用。
+
+## API 手册与开发验证
+
+本库通过 `lin/info.rkt` 注册
+[Scribble API 手册](lin/scribblings/lin.scrbl)。安装后可使用
+`raco docs lin` 查阅函数契约、诊断帧、校验和选择与错误行为。
+
+[可执行入门示例](examples/quickstart.rkt)是 README 中受保护 ID、
+校验和及序列化帧示例的可回归验证来源，也检查错误校验和必然被拒绝。
+全部使用合成字节，不需要 LIN 适配器、UART BREAK 波形或实车。
+
+在已安装 Racket 的仓库根目录运行：
+
+```sh
+raco pkg install --auto --link .
+racket examples/quickstart.rkt
+raco test -p lin
+raco setup --check-pkg-deps -l lin
+```
+
+CI 会在 Linux、macOS、Windows 上执行包测试、可运行示例与依赖检查。
+本库仅处理帧编解码；UART BREAK 信号、波特率控制、LDF 解析和调度表
+执行仍由调用方负责。
 
 ## 许可证
 

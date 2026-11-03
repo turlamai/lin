@@ -26,3 +26,7 @@ jobs:
         run: raco pkg install --auto --link "$(pwd)"
       - name: Run tests
         run: raco test -p lin
+      - name: Check executable README examples
+        run: racket examples/quickstart.rkt
+      - name: Check package dependency metadata
+        run: raco setup --check-pkg-deps -l lin
