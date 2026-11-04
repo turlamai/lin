@@ -22,6 +22,13 @@ jobs:
         uses: Bogdanp/setup-racket@v1.12
         with:
           version: 'stable'
+      - name: Reject checked-in generated Scribble output
+        shell: bash
+        run: |
+          if git ls-files -- 'lin/doc/**' | grep -q .; then
+            echo "::error::Generated documentation under lin/doc/ must not be committed."
+            exit 1
+          fi
       - name: Install package
         run: raco pkg install --auto --link "$(pwd)"
       - name: Run tests
