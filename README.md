@@ -1,5 +1,7 @@
 # lin — LIN (Local Interconnect Network) in pure Racket
 
+**Support:** [Issues & feedback](https://github.com/turlamai/lin/issues) · [Development policy](https://github.com/turlamai/turlamai.github.io/blob/master/PORTFOLIO.md)
+
 **English** · [中文](README.zh-CN.md)
 
 [![CI](https://github.com/turlamai/lin/actions/workflows/ci.yml/badge.svg)](https://github.com/turlamai/lin/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
